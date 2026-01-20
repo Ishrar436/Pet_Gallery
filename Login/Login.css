@@ -13,7 +13,7 @@ body {
 }
 
 .login-card {
-  background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+  background: rgba(255, 255, 255, 0.9);
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -47,7 +47,7 @@ a {
   padding: 10px;
   border: 1px solid #00c3ff;
   border-radius: 5px;
-  box-sizing: border-box; /* Important for width */
+  box-sizing: border-box;
 }
 
 .login-btn {
