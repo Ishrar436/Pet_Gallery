@@ -1,0 +1,114 @@
+.find-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.filter-section {
+  position: sticky;
+  position: sticky;
+  top: 105px;
+  z-index: 100;
+
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.filter-form {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.search-box {
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  overflow: hidden;
+  padding: 2px 15px;
+  background: white;
+}
+
+.search-box input {
+  border: none;
+  padding: 8px;
+  outline: none;
+  width: 200px;
+}
+
+.search-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.category-filters {
+  display: flex;
+  gap: 10px;
+}
+
+.radio-label input {
+  display: none;
+}
+
+.radio-label span {
+  padding: 8px 16px;
+  background: #f3f4f6;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+  border: 1px solid transparent;
+  display: inline-block;
+}
+
+.radio-label input:checked + span {
+  background: #6366f1;
+  color: white;
+  border-color: #6366f1;
+}
+
+.reset-link {
+  font-size: 14px;
+  color: #ef4444;
+  text-decoration: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.img-container {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background-color: #f3f4f6;
+}
+
+.img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.content {
+  padding: 15px;
+  text-align: center;
+}
