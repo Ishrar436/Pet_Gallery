@@ -1,0 +1,43 @@
+.shelter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.shelter-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.3s ease;
+}
+
+.shelter-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-view,
+.btn-appoint {
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.btn-view {
+  background-color: #6366f1;
+  color: white;
+}
+.btn-appoint {
+  border: 2px solid #6366f1;
+  color: #6366f1;
+}
