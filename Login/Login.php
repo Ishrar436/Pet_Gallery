@@ -111,9 +111,10 @@ if (isset($_POST['login_btn'])) {
                        value="<?php echo isset($_COOKIE['remember_user_email']) ? htmlspecialchars($_COOKIE['remember_user_email']) : ''; ?>" required>
             </div>
 
-            <div class="input-group">
+            <div class="input-group" id="password-group">
                 <label>Password</label>
                 <input type="password" name="password" placeholder="Enter password" required>
+                
             </div>
 
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">

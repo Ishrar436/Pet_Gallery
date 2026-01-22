@@ -1,6 +1,7 @@
 <?php
 
     session_start();
+  
 
 include "../db/db.php";
 
@@ -50,12 +51,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_profile']) ) {
 
 
 $user_res = mysqli_query($conn, "SELECT * FROM users WHERE user_id = '$user_id'");
-$user = mysqli_fetch_assoc($user_res);
+$profile_data = mysqli_fetch_assoc($user_res);
 
-if (!$user) {
+
+if (!$profile_data) {
     die("User not found.");
 }
-
 
 $stats_res = mysqli_query($conn, "SELECT 
     COUNT(*) as total,
@@ -67,17 +68,26 @@ $stats = mysqli_fetch_assoc($stats_res);
 
 $requests_query = "
     SELECT 
-        a.*,
+        a.appointment_id,
+        a.pet_id,
+        a.status,
+        a.appointment_time,
         p.petName,
         p.breed,
-        sh.shelter_name AS shelter_name
+        sh.shelter_name
     FROM appointments a
-    LEFT JOIN pets p ON a.pet_id = p.id
-    LEFT JOIN shelter sh ON a.shelter_id = sh.shelter_id
+    JOIN pets p ON a.pet_id = p.id
+    JOIN shelter sh ON a.shelter_id = sh.shelter_id
     WHERE a.user_id = '$user_id'
     ORDER BY a.appointment_time DESC
 ";
+
 $requests_res = mysqli_query($conn, $requests_query);
+
+
+if (!$requests_res) {
+    echo "SQL Error: " . mysqli_error($conn);
+}
 
 ?>
 
@@ -86,7 +96,7 @@ $requests_res = mysqli_query($conn, $requests_query);
 <head>
     <meta charset="UTF-8">
     <title><?php echo $is_admin_viewing ? "Viewing Profile" : "My Dashboard"; ?></title>
-    <link rel="stylesheet" href="/try/EditProfile/Edit_Profile.css">
+    <link rel="stylesheet" href="../EditProfile/Edit_Profile.css">
     <link rel="stylesheet" href="../nav/NavBar.css">
 
 </head>
@@ -102,10 +112,11 @@ $requests_res = mysqli_query($conn, $requests_query);
 
             <div class="profile-header">
                 <div class="user-initials">
-                    <?php echo strtoupper(substr($user['full_name'], 0, 1)); ?>
+                    <?php echo strtoupper(substr($profile_data['full_name'], 0, 1)); ?>
+               
                 </div>
-                <h3><?php echo htmlspecialchars($user['full_name']); ?></h3>
-                <p><?php echo htmlspecialchars($user['email']); ?></p>
+                <h3><?php echo htmlspecialchars($profile_data['full_name']); ?></h3>
+                <p><?php echo htmlspecialchars($profile_data    ['email']); ?></p>
             </div>
 
             <div class="mini-stats">
@@ -146,27 +157,27 @@ $requests_res = mysqli_query($conn, $requests_query);
                     <div class="grid-inputs">
                         <div class="field">
                             <label>Full Name</label>
-                            <input type="text" name="full_name" value="<?php echo htmlspecialchars($user['full_name']); ?>" readonly required>
+                            <input type="text" name="full_name" value="<?php echo htmlspecialchars($profile_data['full_name']); ?>" readonly required>
                         </div>
                         <div class="field">
                             <label>Phone</label>
-                            <input type="text" name="phone_number" value="<?php echo htmlspecialchars($user['phone_number']); ?>" readonly>
+                            <input type="text" name="phone_number" value="<?php echo htmlspecialchars($profile_data['phone_number']); ?>" readonly>
                         </div>
                         <div class="field">
                             <label>Gender</label>
                             <select name="gender" disabled>
-                                <option value="Male" <?php if($user['gender'] == 'Male') echo 'selected'; ?>>Male</option>
-                                <option value="Female" <?php if($user['gender'] == 'Female') echo 'selected'; ?>>Female</option>
-                                <option value="Other" <?php if($user['gender'] == 'Other') echo 'selected'; ?>>Other</option>
+                                <option value="Male" <?php if($profile_data['gender'] == 'Male') echo 'selected'; ?>>Male</option>
+                                <option value="Female" <?php if($profile_data['gender'] == 'Female') echo 'selected'; ?>>Female</option>
+                                <option value="Other" <?php if($profile_data['gender'] == 'Other') echo 'selected'; ?>>Other</option>
                             </select>
                         </div>
                         <div class="field">
                             <label>Occupation</label>
-                            <input type="text" name="occupation" value="<?php echo htmlspecialchars($user['occupation']); ?>" readonly>
+                            <input type="text" name="occupation" value="<?php echo htmlspecialchars($profile_data['occupation']); ?>" readonly>
                         </div>
                         <div class="field full">
                             <label>Home Address</label>
-                            <textarea name="home_address" readonly><?php echo htmlspecialchars($user['home_address']); ?></textarea>
+                            <textarea name="home_address" readonly><?php echo htmlspecialchars($profile_data['home_address']); ?></textarea>
                         </div>
                     </div>
 
@@ -207,7 +218,7 @@ $requests_res = mysqli_query($conn, $requests_query);
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="../PetDetails/PetDetails.php?id=<?php echo $row['pet_id']; ?>" class="view-btn" style="text-decoration:none; display:inline-block; text-align:center;">View Pet</a>
+                                        <a href="../PetDetails/PetDetails.php?id=<?php echo $row['pet_id']; ?>" class="view-btn" style="text-decoration:none; display:inline-block; text-align:center; border:1px; padding:5px; border-radius:10px;background:#B0FFDE;">View Pet</a>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>

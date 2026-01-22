@@ -14,7 +14,8 @@ $sql = "SELECT p.*, s.shelter_name
 
 
 if (!empty($category)) {
-    $sql .= " AND p.category = '$category'";
+$sql .= " AND LOWER(p.category) = LOWER('$category')";
+
 }
 
 

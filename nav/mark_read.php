@@ -5,9 +5,9 @@ session_start();
 if (isset($_GET['notif_id']) && isset($_SESSION['user_id'])) {
     $notif_id = mysqli_real_escape_string($conn, $_GET['notif_id']);
     $pet_id = mysqli_real_escape_string($conn, $_GET['pet_id']);
-    $role = $_SESSION['role']; // Get the user role from session
+    $role = $_SESSION['role']; 
 
-    // 1. Identify which ID to check against based on role
+    
     if ($role === 'shelter') {
         $current_id = $_SESSION['shelter_id'];
         $column = "shelter_id";
@@ -16,17 +16,13 @@ if (isset($_GET['notif_id']) && isset($_SESSION['user_id'])) {
         $column = "user_id";
     }
 
-    // 2. Update notification to 'read' (Security: checking both notification ID and owner ID)
     $query = "UPDATE notifications SET is_read = 1 
               WHERE id = '$notif_id' AND $column = '$current_id'";
     mysqli_query($conn, $query);
 
-    // 3. Conditional Redirect Logic
     if ($role === 'shelter') {
-        // Redirect Shelter Member to their management view
         header("Location: /try/Shelter-Member/Shelter_member_view.php?id=" . $pet_id);
     } else {
-        // Redirect Regular Member to the public pet details
         header("Location: /try/PetDetails/PetDetails.php?id=" . $pet_id);
     }
     exit();

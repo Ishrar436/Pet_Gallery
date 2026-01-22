@@ -126,7 +126,7 @@ if (isset($_POST['confirm_adoption'])) {
     <div class="details-grid">
         <div class="image-section">
             <?php if(!empty($pet_Info['petPhoto'])): ?>
-                <img src="<?php echo $pet_Info['pet_photo']; ?>" id="petPreview" alt="Pet Image" class="main-img">
+                <img src="<?php echo $pet_Info['petPhoto']; ?>" id="petPreview" alt="Pet Image" class="main-img">
                
          
             <?php endif; ?>
@@ -214,17 +214,36 @@ if (isset($_POST['confirm_adoption'])) {
         <?php if($error) echo "<p class='error-alert'>$error</p>"; ?>
 
         <form method="POST">
-            <?php $is_restricted = (isset($_SESSION['role']) && ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'shelter')); ?>
-            <label>Choose a date & time to visit:</label>
-            <input type="datetime-local" name="appointment_time" required min="<?php echo date('Y-m-d\TH:i'); ?>" <?php echo $is_restricted ? 'disabled' : ''; ?>>
-            <button type="submit" name="book_appointment" class="book-btn" <?php echo $is_restricted ? 'disabled' : ''; ?>>
-                <?php echo $is_restricted ? 'Booking Restricted' : 'Request Appointment'; ?>
-            </button>
-        </form>
+    <?php 
+    $current_role = isset($_SESSION['role']) ? strtolower(trim($_SESSION['role'])) : '';
+    $is_restricted = ($current_role === 'admin' || $current_role === 'shelter'); 
+    ?>
+
+    <label>Choose a date & time to visit:</label>
+    
+    <input type="datetime-local" 
+           name="appointment_time" 
+           required 
+           min="<?php echo date('Y-m-d\TH:i'); ?>" 
+           <?php echo $is_restricted ? 'readonly style="background:#eee;"' : ''; ?>>
+
+    <button type="submit" 
+            name="book_appointment" 
+            class="book-btn" 
+            <?php echo $is_restricted ? 'disabled' : ''; ?>>
+        <?php echo $is_restricted ? 'Restricted for ' . ucfirst($current_role) : 'Request Appointment'; ?>
+    </button>
+    
+    <?php if ($is_restricted): ?>
+        <p style="color: red; font-size: 0.8em; margin-top: 5px;">
+            Admins and Shelters cannot book appointments.
+        </p>
+    <?php endif; ?>
+</form>
     <?php endif; ?>
 </div>
     </div>
 </div>
-<script src="../nav/NavBar.js"></script>
+<script src="/nav/NavBar.js"></script>
 </body>
 </html>

@@ -3,32 +3,32 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-include_once $_SERVER['DOCUMENT_ROOT'] . "/try/db/db.php";
+include_once $_SERVER['DOCUMENT_ROOT'] . '/try/db/db.php';
 
 $notif_count = 0;
-$id = ""; // This will hold 'user_id' or 'shelter_id'
+$id = ""; 
 $current_user_id = "";
 
-// Check if user is logged in
+
 if (isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
     
-    // CASE: MEMBER
+
     if ($_SESSION['role'] == "member") {
         $id = "user_id";
         $current_user_id = $_SESSION['user_id'];
     } 
-    // CASE: SHELTER
+
     elseif ($_SESSION['role'] == "shelter" && isset($_SESSION['shelter_id'])) {
         $id = "shelter_id";
         $current_user_id = $_SESSION['shelter_id'];
     }
-    // CASE: ADMIN (Defaulting to user_id check)
+   
     else {
         $id = "user_id";
         $current_user_id = $_SESSION['user_id'];
     }
 
-    // Run the count query
+
     if (!empty($id)) {
         $notif_query = "SELECT COUNT(*) AS total FROM notifications WHERE $id = '$current_user_id' AND is_read = 0";
         $notif_res = mysqli_query($conn, $notif_query);
@@ -85,7 +85,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
                         <div class="notif-dropdown" id="notif-dropdown">
                             <div class="notif-content">
                                 <?php
-                                // Now $id and $current_user_id are safely defined from the logic above
+                              
                                 $get_notif = "SELECT * FROM notifications WHERE $id = '$current_user_id' ORDER BY created_at DESC LIMIT 5";
                                 $res_notif = mysqli_query($conn, $get_notif);
 

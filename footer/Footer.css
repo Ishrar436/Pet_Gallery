@@ -1,10 +1,9 @@
-.admin-footer {
-  background-color: #eef7ff;
-  color: #000000;
-  padding: 30px 0;
-  margin-top: 50px;
-  border-top: 1px solid #3498db81;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+.user-footer {
+  background-color: #f8f9fa;
+  color: #444;
+  padding: 50px 0 20px;
+  border-top: 1px solid #e1e1e1;
+  font-family: "Poppins", sans-serif;
 }
 
 .footer-content {
@@ -12,53 +11,50 @@
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 0 20px;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 40px;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
 }
 
 .footer-section h4 {
-  margin: 0;
-  color: #000000;
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.footer-section p {
-  margin: 5px 0 0;
-  font-size: 0.9rem;
-  color: #000000;
+  color: #27ae60;
+  font-size: 25px;
+  margin-bottom: 15px;
 }
 
 .footer-links {
   display: flex;
-  gap: 20px;
+  gap: 50px;
+  flex: 2;
+  justify-content: center;
 }
 
-.footer-links a {
-  color: #000000;
+.link-group h5 {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1rem;
+}
+
+.link-group a {
+  display: block;
+  color: #666;
   text-decoration: none;
-  font-size: 0.9rem;
-  transition: color 0.3s ease;
+  margin-bottom: 8px;
+  transition: 0.3s;
 }
 
-.footer-links a:hover {
-  color: #3498db;
+.link-group a:hover {
+  color: #27ae60;
+  padding-left: 5px;
 }
 
 .footer-status {
+  flex: 1;
+  min-width: 250px;
   text-align: right;
-}
-
-.footer-status p {
-  margin: 0;
-  font-size: 0.85rem;
-  color: #000000;
-}
-
-.system-time {
-  font-style: italic;
-  margin-top: 5px !important;
 }

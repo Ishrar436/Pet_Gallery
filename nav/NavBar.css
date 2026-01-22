@@ -56,7 +56,7 @@
 
 .register-btn-nav {
   background: #6366f1;
-  color: white;
+  color: rgb(255, 255, 255);
   padding: 10px 22px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
@@ -64,14 +64,16 @@
 
 .register-btn-nav:hover {
   transform: translateY(-2px);
+  background-color: #efc1c1;
   box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+  color: rgb(155, 0, 0);
 }
-/* --- 1. RAW CSS BELL ICON --- */
+
 .notif-link {
   position: relative;
   display: flex;
   align-items: center;
-  padding: 5px; /* Added padding for easier clicking */
+  padding: 5px;
   text-decoration: none;
   cursor: pointer;
   transition: opacity 0.2s;
@@ -80,14 +82,14 @@
 .notif-link:hover .css-bell,
 .notif-link:hover .css-bell::before,
 .notif-link:hover .css-bell::after {
-  background: #6366f1; /* Matches your indigo theme on hover */
+  background: #6366f1;
 }
 
 .css-bell {
   position: relative;
   width: 16px;
   height: 14px;
-  background: #475569; /* Slate color to match your logo */
+  background: #475569;
   border-radius: 8px 8px 0 0;
 }
 
@@ -113,7 +115,6 @@
   border-radius: 0 0 5px 5px;
 }
 
-/* --- 2. DROPDOWN POSITIONING --- */
 .nav-item-notif {
   position: relative;
   display: flex;
@@ -123,19 +124,19 @@
 .notif-dropdown {
   display: none;
   position: absolute;
-  right: 10px; /* Aligned to the right */
-  top: calc(100% + 15px); /* Moves it below the navbar padding */
+  right: 10px;
+  top: calc(100% + 15px);
   width: 320px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 12px; /* Smoother corners */
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+  border-radius: 12px;
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.1),
     0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  z-index: 1001; /* Higher than navbar z-index */
+  z-index: 1001;
   overflow: hidden;
 }
 
-/* Arrow pointer on top of dropdown */
 .notif-dropdown::before {
   content: "";
   position: absolute;
@@ -155,18 +156,17 @@
   animation: slideDown 0.2s ease-out;
 }
 .notif-item {
-  border: 1px solid #ddd; /* Lighter default border */
-  border-radius: 8px; /* Softer corners */
+  border: 1px solid #ddd;
+  border-radius: 8px;
   display: flex;
-  flex-direction: column; /* Stack text and small link vertically */
+  flex-direction: column;
   gap: 5px;
   padding: 10px;
-  margin-bottom: 8px; /* Space between notifications */
+  margin-bottom: 8px;
   transition: background 0.3s;
   background-color: #fff;
 }
 
-/* Specific styling for the message text */
 .notif-item p {
   margin: 0;
   font-size: 14px;
@@ -181,7 +181,7 @@
 }
 
 .notif-item small {
-  align-self: flex-end; /* Pushes the "View Details" to the bottom right */
+  align-self: flex-end;
 }
 
 .notif-item small a {
@@ -191,25 +191,24 @@
 .notif-item small a:hover {
   text-decoration: underline;
 }
-/* Styling for Read Notifications (is_read = 1) */
+
 .notif-item.is-read {
-  background-color: #f9f9f9; /* Slightly grey background */
-  border: 1px solid #eeeeee; /* Very faint border */
-  opacity: 0.7; /* Make it slightly see-through */
+  background-color: #f9f9f9;
+  border: 1px solid #eeeeee;
+  opacity: 0.7;
 }
 
 .notif-item.is-read p {
-  color: #ff8181; /* Faded text color */
+  color: #ff8181;
 }
 
 .notif-item.is-read small a {
-  color: #999999; /* Faded link color */
+  color: #999999;
 }
 
-/* Compare with Unread (is_read = 0) */
 .notif-item.unread {
   background-color: #ffffff;
-  border: 1px solid #ff4d4d; /* Bright red border */
+  border: 1px solid #ff4d4d;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 .notif-footer {
@@ -218,18 +217,6 @@
   margin-top: 5px;
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* --- 3. BADGE TWEAKS --- */
 .notif-badge {
   position: absolute;
   top: -5px;
