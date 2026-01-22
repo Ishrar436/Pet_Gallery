@@ -60,7 +60,7 @@ if (isset($_POST['register_shelter_member'])) {
     $gender = $_POST['gender'];
 
 
-    // 1. Insert into shelter_members table
+     1. Insert into shelter_members table
     $query1 = "INSERT INTO sheltermember (full_name, username, email, password, phone_number, occupation, location, shelter_name, home_address, gender) 
                VALUES ('$fullname', '$username', '$email', '$password', '$phone', 'Shelter Member', '$location_id', '$shelter_id', '$Home_address', '$gender')";
     mysqli_query($conn, $query1);

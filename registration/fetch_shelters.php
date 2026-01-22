@@ -1,8 +1,8 @@
 <?php
-// Move header to the top
+ Move header to the top
 header('Content-Type: application/json');
 
-// 1. Check your path! If this file is in /registration/, use "../db/db.php"
+ 1. Check your path! If this file is in /registration/, use "../db/db.php"
 include "../db/db.php"; 
 
 if (!isset($_GET['location_id'])) {

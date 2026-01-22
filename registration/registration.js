@@ -27,7 +27,7 @@ document
 
     shelterDropdown.innerHTML = '<option value="">Loading shelters...</option>';
 
-    // Use path relative to registration.php
+     Use path relative to registration.php
     fetch("../registration/fetch_shelters.php?location_id=" + locId)
       .then((response) => response.json())
       .then((data) => {
