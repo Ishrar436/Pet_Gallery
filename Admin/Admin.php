@@ -4,17 +4,15 @@ session_start();
 include "../db/db.php";
 include "../nav/NavBar.php";
 
-// --- 2. Security: Check if User is Admin ---
-// Assuming you set $_SESSION['user_id'] during login
 if (!isset($_SESSION['user_id'])) {
-    // Redirect to login if not logged in
+   
     header("Location: Login.php"); 
     exit();
 }
 
 $current_user_id = (int)$_SESSION['user_id'];
 
-// Verify Admin Status using the 'users' table
+
 $admin_check_sql = "SELECT is_admin, full_name FROM users WHERE user_id = $current_user_id";
 $admin_check_result = mysqli_query($conn, $admin_check_sql);
 $admin_data = mysqli_fetch_assoc($admin_check_result);
@@ -23,12 +21,12 @@ if (!$admin_data || $admin_data['is_admin'] != 1) {
     die("ACCESS DENIED: You are not an Administrator.");
 }
 
-// --- 3. Handle Form Submissions (POST Requests) ---
 
-// --- 3. Handle Form Submissions (POST Requests) ---
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
-    // A. Approve/Reject Shelter Member
+
     if (isset($_POST['action_member_status'])) {
         $member_id = (int)$_POST['member_id'];
         $new_status = mysqli_real_escape_string($conn, $_POST['status']); 
@@ -39,18 +37,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         mysqli_query($conn, $sql);
     }
 
-    // B. Approve Pet Post (Added by Shelter Members)
   if (isset($_POST['action_pet_decision'])) {
     $pet_id = (int)$_POST['pet_id'];
-    $decision = $_POST['action_pet_decision']; // 'approve' or 'reject'
+    $decision = $_POST['action_pet_decision'];
     
     if ($decision === 'approve') {
-        // Approve: set adminApproved to 1
+    
         $sql = "UPDATE pets SET adminApproved = 1 WHERE id = $pet_id";
         $status_msg = "approved";
     } else {
-        // Reject: You can either delete it or set adminApproved to a special value like -1
-        // Here we mark it as rejected using the Admin_Approved column
+  
         $sql = "UPDATE pets SET adminApproved = -1 WHERE id = $pet_id";
         $status_msg = "rejected";
     }
@@ -62,15 +58,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     exit();
     }
-    // C. Adoption Decision (Accept/Reject specific adoption application)
+
     if (isset($_POST['action_adoption_decision'])) {
     $pet_id = (int)$_POST['pet_id'];
-    $decision = mysqli_real_escape_string($conn, $_POST['decision']); // 'Accepted' or 'Rejected'
+    $decision = mysqli_real_escape_string($conn, $_POST['decision']); 
     $admin_id = (int)$_SESSION['user_id'];
-    $applicant_id = (int)$_POST['applicant_id']; // Passed from hidden input
+    $applicant_id = (int)$_POST['applicant_id']; 
 
     if ($decision === 'Accepted') {
-        // Finalize the adoption
+      
         $sql = "UPDATE pets SET 
                 requestStatus = 'Accepted', 
                 adoption_status = 'Adopted', 
@@ -79,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 WHERE id = $pet_id";
         $msg = "Congratulations! Your adoption request has been approved.";
     } else {
-        // Reject and put pet back to Available
+      
         $sql = "UPDATE pets SET 
                 requestStatus = 'Rejected', 
                 adoption_status = 'Available', 
@@ -90,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (mysqli_query($conn, $sql)) {
-        // Notify the applicant
+        
         mysqli_query($conn, "INSERT INTO notifications (user_id, pet_id, message, is_read) 
                              VALUES ($applicant_id, $pet_id, '$msg', 0)");
                              
@@ -98,17 +94,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-    // D. Pet Deletion Request
-   // Handle Pet Deletion Request Decision
     if (isset($_POST['action_delete_pet_decision'])) {
     $pet_id = (int)$_POST['pet_id'];
     $decision = $_POST['decision']; 
     
     if ($decision == 'approve') {
-        // Use the exact database names: deletion_status and deleted_by
         $sql = "UPDATE pets SET deletion_status = 'Deleted', deleted_by = $current_user_id WHERE id = $pet_id";
     } else {
-        // Use the exact database names: deletion_status and deleted_req_by
         $sql = "UPDATE pets SET deletion_status = NULL, deleted_req_by = NULL WHERE id = $pet_id";
     }
     mysqli_query($conn, $sql);
@@ -118,10 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     exit();
 }
 
-// --- 4. Fetch Data for Views ---
 
-// View 1: Pending Shelter Members
-// Join sheltermember with shelter and locations tables
 $sql_members = "SELECT 
                     sm.*, 
                     s.shelter_name as actual_shelter_name, 
@@ -133,13 +122,10 @@ $sql_members = "SELECT
 
 $res_members = mysqli_query($conn, $sql_members);
 
-// View 2: All Shelters & Members (Management)
 $sql_all_shelters = "SELECT s.*, l.name as location_name FROM shelter s 
                      LEFT JOIN locations l ON s.location_id = l.id";
 $res_all_shelters = mysqli_query($conn, $sql_all_shelters);
 
-// View: All Users (excluding admins if you want)
-// View: All Users with Shelter Membership Info from the users table
 $sql_all_users = "SELECT 
                     u.user_id, 
                     u.full_name, 
@@ -155,8 +141,6 @@ $sql_all_users = "SELECT
 
 $res_all_users = mysqli_query($conn, $sql_all_users);
 
-// View 3: Pet Deletion Requests (Where deletion_status is 'Pending Delete' OR req_by is set but not confirmed)
-// Based on your previous logic: deletion_status = 'Pending Delete'
 $sql_del_req = "SELECT 
                     p.*, 
                     sm.full_name AS requester_name, 
@@ -168,7 +152,6 @@ $sql_del_req = "SELECT
 
 $res_del_req = mysqli_query($conn, $sql_del_req);
 
-// View 4: Pending Pet Approvals
 $sql_pet_approval = "SELECT p.id, p.petName, p.breed, p.addedBy, s.shelter_name 
                      FROM pets p 
                      LEFT JOIN shelter s ON p.shelterId = s.shelter_id 
@@ -176,7 +159,6 @@ $sql_pet_approval = "SELECT p.id, p.petName, p.breed, p.addedBy, s.shelter_name
                      AND (p.deletion_status IS NULL OR p.deletion_status != 'Deleted')";
 $res_pet_approval = mysqli_query($conn, $sql_pet_approval);
 
-// View 5: Adoption Requests (For the Dashboard/Adoptions tab)
 $sql_adoptions = "SELECT p.id, p.petName, p.breed, p.addedBy, p.requestStatus, 
                   s.shelter_name AS shelterName, l.name AS location
                   FROM pets p
@@ -209,7 +191,6 @@ $final_pet_approval = "SELECT
                      AND (p.deletion_status IS NULL OR p.deletion_status != 'Deleted')";
 
 $final_adoption = mysqli_query($conn, $final_pet_approval);
-// Fetch Officially Adopted Pets for the History Section
 $sql_adopted_history = "SELECT p.*, s.shelter_name, u.full_name AS adopter_name 
                         FROM pets p 
                         LEFT JOIN shelter s ON p.shelterId = s.shelter_id 
@@ -362,19 +343,19 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
 
                         <p><strong>Applicant:</strong> <?php echo htmlspecialchars($row['applicant_name']); ?></p>
 
-                        
-
-                        <hr style="margin: 10px 0; border: 0; border-top: 1px solid #eee;">
-
-
-
-                       <a href="../EditProfile/Edit_Profile.php?id=<?php echo $row['final_adoption_by']; ?>" class="btn-view-user" 
+                           <a href="../EditProfile/Edit_Profile.php?id=<?php echo $row['final_adoption_by']; ?>" class="btn-view-user" 
 
                             >
 
                                 👤 View Applicant Profile
 
                             </a>
+
+                        <hr style="margin: 10px 0; border: 0; border-top: 1px solid #eee;">
+
+
+
+                    
 
 
 
