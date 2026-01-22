@@ -15,7 +15,7 @@
                 <p>Connecting loving homes with pets in need. Browse thousands of animals from local shelters and start your journey of companionship.</p>
                 
                 <div class="hero-btns">
-                    <a href="browse.php" class="btn-primary">Browse Pets</a>
+                    <a href="/try/Pet-Gallery/FindPets.php" class="btn-primary">Browse Pets</a>
                     <a href="about.php" class="btn-secondary">How it Works</a>
                 </div>
 
